@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krishna And Naresh's Journal</title>
+    <title>Sri Krishna Teja's Journal</title>
 
-    <!-- Feature 1: Google Font import (Playfair Display for headings, Nunito Sans for body) -->
+    <!-- FEATURE 1: Google Font for custom typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="journal_final.css">
+    <link rel="stylesheet" href="journal_starter.css">
 </head>
 <body>
 
@@ -19,6 +19,9 @@
         <div id="header-box">
             <h1>Sri Krishna Teja's Journal</h1>
             <p class="tagline">Just another day, just another entry</p>
+
+            <!-- FEATURE 5: Dark mode toggle button -->
+            <button id="theme-toggle" type="button">🌙 Dark Mode</button>
         </div>
 
         <!-- SIDEBAR -->
@@ -72,6 +75,28 @@
         </div>
 
     </div>
+
+    <!-- FEATURE 5: Dark mode toggle logic -->
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlEl = document.documentElement;
+        const bodyEl = document.body;
+
+        // Restore saved preference on page load
+        if (localStorage.getItem('theme') === 'dark') {
+            htmlEl.classList.add('dark-mode');
+            bodyEl.classList.add('dark-mode');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            htmlEl.classList.toggle('dark-mode');
+            bodyEl.classList.toggle('dark-mode');
+            localStorage.setItem(
+                'theme',
+                bodyEl.classList.contains('dark-mode') ? 'dark' : 'light'
+            );
+        });
+    </script>
 
 </body>
 </html>
