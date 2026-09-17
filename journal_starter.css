@@ -1,7 +1,27 @@
 /* =========================================================
-   JOURNAL STYLESHEET - COMPLETED
-   All 6 steps filled in below.
+   JOURNAL STYLESHEET - COMPLETED + 4 BONUS FEATURES
+   Original 6 steps preserved below, with additions marked
+   clearly as "FEATURE #" blocks.
    ========================================================= */
+
+
+/* ---------------------------------------------------------
+   FEATURE 1: Custom Color Theme & Typography
+   4 custom colors defined as CSS variables + Google Fonts
+   (Playfair Display for headings, Nunito Sans for body),
+   applied consistently across header, sidebar, and entries.
+   --------------------------------------------------------- */
+
+:root {
+    --color-bg-page: #f6f1e9;      /* warm parchment page background */
+    --color-header: #2b4257;       /* deep ink-navy for the header   */
+    --color-sidebar: #efe6d8;      /* soft parchment for the sidebar */
+    --color-accent: #c1666b;       /* dusty rose accent for hovers   */
+    --color-text: #2b2b28;         /* main body text color           */
+
+    --font-heading: "Playfair Display", Georgia, serif;
+    --font-body: "Nunito Sans", Arial, sans-serif;
+}
 
 
 /* ---------------------------------------------------------
@@ -15,8 +35,9 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    font-family: var(--font-body);
+    color: var(--color-text);
+    background-color: var(--color-bg-page);
 }
 
 #main-container {
@@ -31,20 +52,23 @@ body {
    --------------------------------------------------------- */
 
 #header-box {
-    background-color: #4a90e2;
+    background-color: var(--color-header);
     color: white;
     padding: 20px;
     text-align: center;
 }
 
 #header-box h1 {
+    font-family: var(--font-heading);
     font-size: 2em;
 }
 
 
 /* ---------------------------------------------------------
-   STEP 3: Create Two-Column Float Layout
-   --------------------------------------------------------- */
+   STEP 3 (ORIGINAL): Two-Column Float Layout
+   Kept here, commented out, for comparison against the
+   Flexbox refactor in FEATURE 4 below.
+   ---------------------------------------------------------
 
 #sidebar {
     float: left;
@@ -59,6 +83,39 @@ body {
     padding: 20px;
 }
 
+--------------------------------------------------------- */
+
+
+/* ---------------------------------------------------------
+   FEATURE 4: Flexbox Refactor
+   Replaces the float-based two-column layout above with
+   Flexbox. #main-container becomes the flex container;
+   the clearfix from STEP 4 is no longer needed for layout
+   purposes with Flexbox, but is kept further below
+   (commented) for reference.
+   --------------------------------------------------------- */
+
+#main-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#header-box,
+#footer-box {
+    width: 100%;
+}
+
+#sidebar {
+    width: 25%;
+    padding: 20px;
+    background-color: var(--color-sidebar);
+}
+
+#content-area {
+    width: 75%;
+    padding: 20px;
+}
+
 .friends-list {
     list-style: none;
 }
@@ -66,18 +123,30 @@ body {
 .friends-list li {
     padding: 8px 0;
     border-bottom: 1px solid #ddd;
+    transition: color 0.25s ease, padding-left 0.25s ease;
+}
+
+/* FEATURE 2: Hover effect #1 - friends list items */
+.friends-list li:hover {
+    color: var(--color-accent);
+    padding-left: 8px;
+    cursor: pointer;
 }
 
 
 /* ---------------------------------------------------------
-   STEP 4: Fix Parent Collapse with Clearfix
-   --------------------------------------------------------- */
+   STEP 4 (ORIGINAL): Clearfix for the float layout
+   No longer required now that Flexbox handles the layout,
+   kept here commented out to match the float version above.
+   ---------------------------------------------------------
 
 #main-container::after {
     content: "";
     display: table;
     clear: both;
 }
+
+--------------------------------------------------------- */
 
 
 /* ---------------------------------------------------------
@@ -90,6 +159,13 @@ body {
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+/* FEATURE 2: Hover effect #2 - journal entry cards lift on hover */
+.journal-entry:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
 }
 
 .entry-image {
@@ -101,10 +177,18 @@ body {
     box-shadow: 0 0 0 2px #333;
     padding: 8px;
     background: white;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+/* FEATURE 2: Hover effect #3 - polaroid-style image tilts and pops */
+.entry-image:hover {
+    box-shadow: 0 0 0 2px var(--color-accent);
+    transform: rotate(-1deg) scale(1.03);
 }
 
 .entry-title {
-    color: #333;
+    font-family: var(--font-heading);
+    color: var(--color-header);
     margin-bottom: 10px;
 }
 
@@ -117,10 +201,12 @@ body {
 
 
 /* ---------------------------------------------------------
-   STEP 6: Add Responsive Media Query
+   STEP 6: Mobile Breakpoint (narrow phones)
+   Adjusted to a tighter max-width so it no longer overlaps
+   with the new tablet breakpoint added in FEATURE 3.
    --------------------------------------------------------- */
 
-@media (max-width: 768px) {
+@media (max-width: 599px) {
     #main-container {
         width: 100%;
         margin: 0;
@@ -128,11 +214,47 @@ body {
 
     #sidebar,
     #content-area {
-        float: none;
         width: 100%;
     }
 
     #sidebar {
         margin-bottom: 20px;
+    }
+
+    .entry-image {
+        float: none;
+        display: block;
+        margin: 0 auto 15px auto;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   FEATURE 3: Extra Responsive Breakpoint (Tablet, 600-1024px)
+   Distinct from the mobile breakpoint above: sidebar and
+   content stay side by side but resize proportionally, and
+   the container becomes fluid instead of a fixed 960px.
+   --------------------------------------------------------- */
+
+@media (min-width: 600px) and (max-width: 1024px) {
+    #main-container {
+        width: 92%;
+        margin: 20px auto;
+    }
+
+    #sidebar {
+        width: 33%;
+    }
+
+    #content-area {
+        width: 67%;
+    }
+
+    #header-box h1 {
+        font-size: 1.6em;
+    }
+
+    .entry-image {
+        width: 120px;
     }
 }
